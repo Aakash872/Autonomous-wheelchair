@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<launch>
+  <!--lidar -->
+  <!-- <include file="$(find rplidar_ros)/launch/rplidar.launch"/> -->
+  <!-- Laser generated odometry -->
+  <!-- <include file="$(find rf2o_laser_odometry)/launch/rf2o_laser_odometry.launch"/>    -->
+  <!-- Spawning camera -->
+  <include file="$(find realsense2_camera)/launch/rs_aligned_depth.launch"/>
+  <!-- Mapping launch file -->
+  <include file="$(find rtabmap_ros)/launch/rtabmap.launch">
+  <arg name="depth_topic" value="/camera/aligned_depth_to_color/image_raw"/>
+  <arg name="rgb_topic" value="/camera/color/image_raw"/>
+  <arg name="camera_info_topic" value="/camera/color/camera_info"/>
+  <!-- <arg name="Odom/Strategy" value="1"/> -->
+  <!-- <arg name="Reg/Force3DoF"    value="true" /> -->
+  <!-- <arg name="Optimizer/Slam2D" value="true" /> -->
+  <!-- <arg name="cloud_noise_filtering_radius" value="0.05"/> -->
+  <!-- <arg name="cloud_noise_filtering_min_neighbors" value="2"/> -->
+</include>
+<node pkg="tf" type="static_transform_publisher" name="base_to_camera" args="0.24 0.26 0.16 0 0 0 base_link camera_link 10"/>
+
+</launch>
+

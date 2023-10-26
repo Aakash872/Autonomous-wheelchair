@@ -1,0 +1,39 @@
+<launch>
+
+<!-- Necessary Parameters -->
+  <arg name="open_rviz" default="true"/>
+  <arg name="move_forward_only" default="true"/>
+
+  <!-- When odometry is obtained from fake laser, remap the topic -->
+<include file="$(find realsense2_camera)/launch/rs_aligned_depth.launch"/>
+<!-- Calculating fake odometry from RGBD data using RGBD_odometry node -->
+<node pkg="rtabmap_ros" type="rgbd_odometry" name="rgbd_odometry" output="screen">
+      <param name="subscribe_rgbd" type="bool"   value="true"/>
+      <param name="frame_id"       type="string" value="camera_link"/>
+      <remap from="rgbd_image" to="/aligned_depth_to_image/image_raw"/>
+    </node>
+
+<!-- Launching rtabmap in localisation mode the default map is loaded from ~/.ros/rtabmap.db -->
+<include file="$(find rtabmap_ros)/launch/rtabmap.launch">
+<arg name="depth_topic" value="/camera/aligned_depth_to_color/image_raw"/>
+<arg name="rgb_topic" value="/camera/color/image_raw"/>
+<arg name="camera_info_topic" value="/camera/color/camera_info"/>
+<arg name="localization" value="true"/>
+</include>
+
+<!-- Move_base launch file -->
+<include file="$(find wc_navigation3D)/launch/move_base.launch">
+<arg name="move_forward_only" value="$(arg move_forward_only)"/>
+</include> 
+
+<!-- Rviz Files -->
+<group if="$(arg open_rviz)"> 
+    <node pkg="rviz" type="rviz" name="rviz" required="true"
+          args="-d $(find wc_navigation3D)/rviz/wc_3D.rviz"/>
+  </group>
+
+<!-- Necessary Transforms  -->
+<!-- Look for frame id parameter in drivers of sensors -->
+<!-- <node pkg="tf" type="static_transform_publisher" name="base_to_laser" args="0.50 -0.20 0 1.57 0 3.14 base_link laser 10"/> -->
+<node pkg="tf" type="static_transform_publisher" name="base_to_camera" args="0.24 0.26 0.16 0 0 0 base_link camera_link 10"/>
+</launch>

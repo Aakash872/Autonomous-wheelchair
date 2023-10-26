@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>wc_navigation3D</name>
+  <version>1.2.4</version>
+  <description>
+    This package provides roslaunch scripts for navigating the robot in 3D.
+  </description>
+  <license>Apache 2.0</license>
+  <author email="akmaurya7379@gmail.com">Anurag Maurya</author>
+  <author email="gupta.ayush2587@gmail.com">Ayush Gupta</author>
+  <maintainer email="akmaurya7379@gmail.com">Anurag Maurya</maintainer>
+  <buildtool_depend>catkin</buildtool_depend>
+  <exec_depend>move_base</exec_depend>
+</package>
