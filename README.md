@@ -129,6 +129,11 @@ roslaunch wc_navigation3D wc_3d_mapping.launch
 ```bash
 roslaunch dr_spaam_ros dr_spaam_ros.launch
 ```
+### Launching Low level controller
+
+```bash
+rosrun rosserial_python serial_node.py /dev/ttyACM0
+```
 
 ### Demonstrations
 
